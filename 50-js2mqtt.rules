@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="Logitech Logitech Attack 3", SYMLINK+="joystick", TAG+="systemd", ENV{SYSTEMD_WANTS}="js2mqtt@joystick.service"
+ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="CH PRODUCTS CH PRO PEDALS USB ", SYMLINK+="pedals", TAG+="systemd", ENV{SYSTEMD_WANTS}="js2mqtt@pedals.service"

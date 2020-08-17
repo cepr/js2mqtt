@@ -2,7 +2,7 @@
 Description=Publish Linux Joystick events to a MQTT broker
 
 [Service]
-ExecStart=/usr/local/bin/js2mqtt
+ExecStart=/usr/local/bin/js2mqtt -i /dev/input/%i -t /js2mqtt/%i
 Restart=always
 RestartSec=3
 
