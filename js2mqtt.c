@@ -39,7 +39,7 @@ const char* topic = "/joystick";
 bool debug = false;
 
 // Constants
-#define MOSQUITTO_KEEP_ALIVE 5
+#define MOSQUITTO_KEEP_ALIVE 60
 
 static void help()
 {
@@ -104,7 +104,7 @@ static void version()
 
 static void mosquitto_assert(int connack_code, const char* msg) {
     if (connack_code != MOSQ_ERR_SUCCESS) {
-        fprintf(stderr, "%s: %s", msg, mosquitto_connack_string(connack_code));
+        fprintf(stderr, "%s: %s\n", msg, mosquitto_connack_string(connack_code));
         exit(EXIT_FAILURE);
     }
 }
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 
     // Parse command line
     int opt;
-    while((opt = getopt(argc, argv, "hvi:o:p:t:")) != -1) {
+    while((opt = getopt(argc, argv, "hvdi:o:p:t:")) != -1) {
         switch(opt) {
             case 'h':
             {
@@ -171,13 +171,7 @@ int main(int argc, char *argv[])
 
             default:
             {
-                fprintf(
-                    stderr,
-                    "Unexpected argument: `-%c`\n"
-                    "Type `%s -h` for help.\n"
-                    "\n",
-                    opt,
-                    prog_name);
+                // getopt already displays a warning
                 exit(EXIT_FAILURE);
                 break;
             }
@@ -215,7 +209,7 @@ int main(int argc, char *argv[])
             perror("Cannot read joystick events");
             exit(EXIT_FAILURE);
         } else if (ret != sizeof(e)) {
-            fprintf(stderr, "Cannot read joystick events");
+            fprintf(stderr, "Cannot read joystick events\n");
             exit(EXIT_FAILURE);
         }
 
@@ -225,7 +219,7 @@ int main(int argc, char *argv[])
         }
 
         // Decode in json
-        char payload[1024];
+        char payload[256];
         size_t payloadlen = snprintf(
             payload,
             sizeof(payload),
@@ -234,7 +228,7 @@ int main(int argc, char *argv[])
             e.value,
             e.type & JS_EVENT_BUTTON ? "button" : "axis",
             e.number
-        ) - 1;
+        );
 
         // Display on stdout        
         if (debug) {

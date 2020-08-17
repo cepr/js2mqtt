@@ -1,0 +1,10 @@
+[Unit]
+Description=Publish Linux Joystick events to a MQTT broker
+
+[Service]
+ExecStart=/usr/local/bin/js2mqtt
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
