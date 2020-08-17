@@ -3,10 +3,11 @@ LDLIBS=-lmosquitto
 all: js2mqtt
 js2mqtt: js2mqtt.c
 
-install: js2mqtt
+install: js2mqtt js2mqtt@.service 50-js2mqtt.rules
 	mkdir -p /usr/local/bin
 	cp js2mqtt /usr/local/bin
-	systemctl stop js2mqtt@joystick.service
-	systemctl stop js2mqtt@pedals.service
+	# Update systemd units
 	cp js2mqtt@.service /lib/systemd/system
-	cp 50-js2mqtt.rules /etc/udev/rules.d
+	# Update and reload udev rules
+	cp 50-js2mqtt.rules /etc/udev/rules.d/
+	udevadm control -R

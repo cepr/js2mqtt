@@ -27,7 +27,7 @@ Copyright 2020 Cedric Priscal
 #include <mosquitto.h>
 
 #ifndef VERSION
-#define VERSION "0.1"
+#define VERSION "1.0"
 #endif
 
 // Define program arguments with default values
